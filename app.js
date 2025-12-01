@@ -13,22 +13,18 @@ const verifyToken = process.env.VERIFY_TOKEN;
 
 // Route for GET requests
 app.get('/', (req, res) => {
-  console.log('start reeq')
-  JSON.stringify(req.query, null, 2)
   const {
     'hub.mode': mode,
     'hub.challenge': challenge,
     'hub.verify_token': token
   } = req.query;
 
-
-  console.log({
-    verifyToken,
-    ...req.query
-  });
-
   if (mode === 'subscribe' && token === verifyToken) {
-    console.log('WEBHOOK VERIFIED');
+    console.log('WEBHOOK VERIFIED: ', challenge);
+    console.log({
+      challenge
+    });
+
     res.status(200).send(challenge);
   } else {
     res.status(403).end();
