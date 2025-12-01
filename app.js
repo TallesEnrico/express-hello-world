@@ -15,12 +15,18 @@ const verifyToken = process.env.VERIFY_TOKEN;
 app.get('/', (req, res) => {
   console.log('start reeq')
   JSON.stringify(req.query, null, 2)
-  const { 'hub.mode': mode, 'hub.challenge': challenge, 'hub.verify_token': token } = req.query;
+  const {
+    'hub.mode': mode,
+    'hub.challenge': challenge,
+    'hub.verify_token': token
+  } = req.query;
 
   if (mode === 'subscribe' && token === verifyToken) {
     console.log('WEBHOOK VERIFIED');
     res.status(200).send(challenge);
   } else {
+    console.log('WEBHOOK NOT VERIFIED');
+    console.log(JSON.stringify(req.query, null, 2));
     res.status(200).send(req.query);
   }
 });
