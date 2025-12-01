@@ -22,16 +22,16 @@ app.get('/', (req, res) => {
   } = req.query;
 
 
-
   console.log({
     verifyToken,
     ...req.query
   });
+
   if (mode === 'subscribe' && token === verifyToken) {
     console.log('WEBHOOK VERIFIED');
     res.status(200).send(challenge);
   } else {
-    res.status(200).send(req.query);
+    res.status(403).end();
   }
 });
 
