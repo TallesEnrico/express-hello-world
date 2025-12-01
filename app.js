@@ -13,6 +13,8 @@ const verifyToken = process.env.VERIFY_TOKEN;
 
 // Route for GET requests
 app.get('/', (req, res) => {
+  console.log('start reeq')
+  console.log(JSON.stringfy(req, null, 2))
   const { 'hub.mode': mode, 'hub.challenge': challenge, 'hub.verify_token': token } = req.query;
 
   if (mode === 'subscribe' && token === verifyToken) {
