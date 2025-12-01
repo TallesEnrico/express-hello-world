@@ -21,12 +21,16 @@ app.get('/', (req, res) => {
     'hub.verify_token': token
   } = req.query;
 
+
+
+  console.log({
+    verifyToken,
+    ...req.query
+  });
   if (mode === 'subscribe' && token === verifyToken) {
     console.log('WEBHOOK VERIFIED');
     res.status(200).send(challenge);
   } else {
-    console.log('WEBHOOK NOT VERIFIED');
-    console.log(JSON.stringify(req.query, null, 2));
     res.status(200).send(req.query);
   }
 });
