@@ -53,6 +53,10 @@ app.post('/', async (req, res) => {
           content: "Você deve responder sempre de forma curta e direta."
         },
         {
+          role: "user",
+          content: `Você sempre deve tratar a pessoa pelo nome ${name}.`
+        },
+        {
           role: 'user',
           content: message
         },
@@ -60,11 +64,10 @@ app.post('/', async (req, res) => {
     })
   });
   const data = await response.json();
-  // const responseGPT = data.choices[0].message.content;
-  console.log(JSON.stringify(data, null, 2));
+  const responseGPT = data?.choices[0]?.message?.content;
 
 
-  const body = `Olá ${name}, como podemos te ajudar hoje?`;
+  const body = responseGPT;
 
   await fetch(`https://graph.facebook.com/v22.0/${appId}/messages`, {
     method: 'POST',
