@@ -60,11 +60,11 @@ app.post('/', async (req, res) => {
     })
   });
   const data = await response.json();
-  const responseGPT = data.choices[0].message.content;
-  console.log(JSON.stringify(responseGPT, null, 2));
+  // const responseGPT = data.choices[0].message.content;
+  console.log(JSON.stringify(data, null, 2));
 
 
-  const body = `Olá ${name}, ${responseGPT}`;
+  const body = `Olá ${name}, como podemos te ajudar hoje?`;
 
   await fetch(`https://graph.facebook.com/v22.0/${appId}/messages`, {
     method: 'POST',
