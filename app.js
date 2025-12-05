@@ -36,19 +36,22 @@ app.post('/', async (req, res) => {
 
   const body = `Olá ${name}, como posso ajudar você hoje?`;
 
-  await axios.post(`https://graph.facebook.com/v22.0/${appId}/messages`, {
-    messaging_product: 'whatsapp',
-    recipient_type: 'individual',
-    to: number,
-    type: 'text',
-    text: {
-      preview_url: false,
-      body: body
-    }
-  }, {
+  await fetch(`https://graph.facebook.com/v22.0/${appId}/messages`, {
+    method: 'POST',
     headers: {
-      'Authorization': `Bearer ${wpToken}`
-    }
+      'Authorization': `Bearer ${wpToken}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      messaging_product: 'whatsapp',
+      recipient_type: 'individual',
+      to: number,
+      type: 'text',
+      text: {
+        preview_url: false,
+        body: body
+      }
+    })
   });
 
   console.log(`\n\nWebhook received ${timestamp}\n`);
