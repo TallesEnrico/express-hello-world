@@ -35,37 +35,37 @@ app.post('/', async (req, res) => {
   const name = req.body.entry[0].changes[0].value.contacts[0].profile.name;
   const message = req.body.entry[0].changes[0].value.message[0].text.body;
 
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${gptToken}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      model: 'gpt-4o-mini',
-      max_tokens: 150,
-      messages: [{
-          role: "system",
-          content: "Você é um professor de inglês de nível avançado respondendo em inglês para um aluno de nível básico."
-        },
-        {
-          role: "user",
-          content: "Você deve responder sempre de forma curta e direta."
-        },
-        {
-          role: 'user',
-          content: message
-        },
-      ]
-    })
-  });
-  const data = await response.json();
-  const responseText = 'data.choices[0].message.content';
-  const responseGPT = data;
-  console.log(JSON.stringify(responseGPT, null, 2));
+  // const response = await fetch('https://api.openai.com/v1/chat/completions', {
+  //   method: 'POST',
+  //   headers: {
+  //     'Authorization': `Bearer ${gptToken}`,
+  //     'Content-Type': 'application/json'
+  //   },
+  //   body: JSON.stringify({
+  //     model: 'gpt-4o-mini',
+  //     max_tokens: 150,
+  //     messages: [{
+  //         role: "system",
+  //         content: "Você é um professor de inglês de nível avançado respondendo em inglês para um aluno de nível básico."
+  //       },
+  //       {
+  //         role: "user",
+  //         content: "Você deve responder sempre de forma curta e direta."
+  //       },
+  //       {
+  //         role: 'user',
+  //         content: message
+  //       },
+  //     ]
+  //   })
+  // });
+  // const data = await response.json();
+  // const responseText = 'data.choices[0].message.content';
+  // const responseGPT = data;
+  // console.log(JSON.stringify(responseGPT, null, 2));
 
 
-  const body = `Olá ${name}, ${responseText}`;
+  const body = `Olá ${name}, como posso te ajudar hoje?`;
 
   await fetch(`https://graph.facebook.com/v22.0/${appId}/messages`, {
     method: 'POST',
