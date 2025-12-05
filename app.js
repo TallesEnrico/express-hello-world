@@ -60,7 +60,10 @@ app.post('/', async (req, res) => {
     })
   });
   const data = await response.json();
-  const responseText = data.choices[0].message.content;
+  const responseText = 'data.choices[0].message.content';
+  const responseGPT = data;
+  console.log(JSON.stringify(responseGPT, null, 2));
+
 
   const body = `Olá ${name}, ${responseText}`;
 
