@@ -1,17 +1,13 @@
-// Import Express.js
 const express = require('express');
 
-// Create an Express app
 const app = express();
-
-// Middleware to parse JSON bodies
 app.use(express.json());
 
-// Set port and verify_token
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
+const appId = process.env.APP_ID;
+const wpToken = process.env.WP_TOKEN;
 const verifyToken = process.env.VERIFY_TOKEN;
 
-// Route for GET requests
 app.get('/', (req, res) => {
   const {
     'hub.mode': mode,
@@ -31,15 +27,35 @@ app.get('/', (req, res) => {
   }
 });
 
-// Route for POST requests
-app.post('/', (req, res) => {
+app.post('/', async (req, res) => {
   const timestamp = new Date().toISOString().replace('T', ' ').slice(0, 19);
+
+  const number = req.body.entry[0].changes[0].value.contacts[0].wa_id;
+  const name = req.body.entry[0].changes[0].value.contacts[0].profile.name;
+  // const message = req.body.entry[0].changes[0].value.message[0].text.body;
+
+  const body = `Olá ${name}, como posso ajudar você hoje?`;
+
+  await axios.post(`https://graph.facebook.com/v22.0/${appId}/messages`, {
+    messaging_product: 'whatsapp',
+    recipient_type: 'individual',
+    to: number,
+    type: 'text',
+    text: {
+      preview_url: false,
+      body: body
+    }
+  }, {
+    headers: {
+      'Authorization': `Bearer ${wpToken}`
+    }
+  });
+
   console.log(`\n\nWebhook received ${timestamp}\n`);
   console.log(JSON.stringify(req.body, null, 2));
   res.status(200).end();
 });
 
-// Start the server
 app.listen(port, () => {
   console.log(`\nListening on port ${port}\n`);
 });
